@@ -63,6 +63,8 @@ from src.hardware.serialhandler.processSerialHandler import processSerialHandler
 from src.data.Semaphores.Semaphores import processSemaphores
 from src.data.TrafficCommunication.processTrafficCommunication import processTrafficCommunication
 from src.utils.ipManager.IpReplacement import IPManager
+from src.traffic_sign_recognition import processTrafficSign
+from src.land_keeping import processLandKeeping
 # ------ New component imports starts here ------#
 
 # ------ New component imports ends here ------#
@@ -78,11 +80,13 @@ queueList = {
 logging = logging.getLogger()
 
 
-Dashboard = True
+Dashboard = False
 Camera = True
 Semaphores = False
 TrafficCommunication = False
 SerialHandler = True
+LandKeeping = True
+TrafficSign = True
 
 # ------ New component flags starts here ------#
  
@@ -126,7 +130,12 @@ if SerialHandler:
     allProcesses.append(processSerialHandler)
 
 # ------ New component runs starts here ------#
- 
+if LandKeeping:
+    processLandKeeping = processLandKeeping(queueList, logging, debugging = False)
+    allProcesses.append(processLandKeeping)
+if TrafficSign:
+    processTrafficSign = processTrafficSign(queueList, logging, debugging = False)
+    allProcesses.append(processTrafficSign)
 # ------ New component runs ends here ------#
 
 # ===================================== START PROCESSES ==================================
